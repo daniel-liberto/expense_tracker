@@ -24,9 +24,10 @@ class ExpenseItem extends StatelessWidget {
                 const Spacer(), // dynamcly space between contents
                 Row(
                   children: [
-                    const Icon(Icons.alarm),
+                    Icon(categoryIcons[expense.category]),
                     const SizedBox(width: 8),
-                    Text(expense.date.toString()),
+                    Text(expense.formattedDate),
+                    // don't use (), because get is not a method
                   ],
                 ),
               ],
