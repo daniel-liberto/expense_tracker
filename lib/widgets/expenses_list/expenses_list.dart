@@ -17,7 +17,7 @@ class ExpensesList extends StatelessWidget {
     return ListView.builder(
       itemCount: expenses
           .length, // this is the amount of times that itemBuilder widget will be called.
-      itemBuilder: (cntxt, index) => ExpenseItem(expenses[
+      itemBuilder: (ctx, index) => ExpenseItem(expenses[
           index]), // get argument list, pick index position of that list, get title of that position on the list
     );
   }
