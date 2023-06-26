@@ -30,8 +30,13 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+      builder: (ctx) => SizedBox(
+        // makes modal get 80% of device height
+        height: MediaQuery.of(ctx).size.height * 0.8,
+        child: NewExpense(onAddExpense: _addExpense),
+      ),
     );
   }
 
