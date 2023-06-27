@@ -147,16 +147,17 @@ class _NewExpenseState extends State<NewExpense> {
                         decoration: BoxDecoration(
                           color: Theme.of(context)
                               .colorScheme
-                              .secondary
+                              .secondaryContainer
                               .withAlpha(180),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withAlpha(120),
-                                spreadRadius: 0,
-                                blurRadius: 1,
-                                blurStyle: BlurStyle.solid,
-                                offset: const Offset(0, 1))
+                              color: Colors.grey.withAlpha(120),
+                              spreadRadius: 0,
+                              blurRadius: 1,
+                              blurStyle: BlurStyle.solid,
+                              offset: const Offset(0, 1),
+                            )
                           ],
                         ),
                         child: DropdownButton(
