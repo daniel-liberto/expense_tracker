@@ -80,100 +80,154 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(
-          iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: Colors.black,
-          title: const Text(
-            'Create a new expense',
-            style: TextStyle(color: Colors.white),
+    return Container(
+      color: Theme.of(context).colorScheme.tertiary.withOpacity(.9),
+      child: Column(
+        children: [
+          AppBar(
+            title: const Text(
+              'Create a new expense',
+            ),
           ),
-        ),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _titleController,
-                  maxLength: 50,
-                  decoration: const InputDecoration(
-                    label: Text('Title'),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _titleController,
+                    maxLength: 50,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      hintText: 'Type name of expense',
+                      contentPadding: const EdgeInsets.fromLTRB(4, 20, 0, 6),
+                      counterStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _amountController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          prefixText: '\$ ',
-                          label: Text('Amount'),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _amountController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            prefixText: '\$ ',
+                            isDense: true,
+                            hintText: 'Type amount',
+                            contentPadding: EdgeInsets.fromLTRB(-10, 0, 0, 6),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            _selectedDate == null
-                                ? 'No date selected'
-                                : formatter.format(_selectedDate!),
-                          ),
-                          IconButton(
-                            onPressed: _presentDatePicker,
-                            icon: const Icon(Icons.calendar_month),
-                          ),
-                        ],
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              _selectedDate == null
+                                  ? 'No date selected'
+                                  : formatter.format(_selectedDate!),
+                            ),
+                            IconButton(
+                              onPressed: _presentDatePicker,
+                              icon: const Icon(Icons.calendar_month),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withAlpha(180),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withAlpha(120),
+                                spreadRadius: 0,
+                                blurRadius: 1,
+                                blurStyle: BlurStyle.solid,
+                                offset: const Offset(0, 1))
+                          ],
+                        ),
+                        child: DropdownButton(
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            enableFeedback: true,
+                            underline: Container(
+                              height: 1,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withAlpha(80),
+                            ),
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withAlpha(180),
+                            ),
+                            dropdownColor: Theme.of(context)
+                                .colorScheme
+                                .tertiary
+                                .withAlpha(220),
+                            value: _selectedCategory,
+                            items: Category.values
+                                .map(
+                                  (category) => DropdownMenuItem(
+                                    value: category,
+                                    child: Row(
+                                      children: [
+                                        Icon(categoryIcons[category]),
+                                        Text(
+                                          '  ${category.name.toUpperCase()}',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              if (value == null) {
+                                return;
+                              } else {
+                                setState(() {
+                                  _selectedCategory = value;
+                                });
+                              }
+                            }),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    DropdownButton(
-                        value: _selectedCategory,
-                        items: Category.values
-                            .map(
-                              (category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(
-                                  category.name.toUpperCase(),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value == null) {
-                            return;
-                          } else {
-                            setState(() {
-                              _selectedCategory = value;
-                            });
-                          }
-                        }),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context); // context = modal, closes modal
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    const SizedBox(width: 4),
-                    ElevatedButton(
-                      onPressed: _submitExpenseData,
-                      child: const Text('Save Expense'),
-                    ),
-                  ],
-                )
-              ],
-            )),
-      ],
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(
+                              context); // context = modal, closes modal
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      const SizedBox(width: 4),
+                      ElevatedButton(
+                        onPressed: _submitExpenseData,
+                        child: const Text('Save Expense'),
+                      ),
+                    ],
+                  )
+                ],
+              )),
+        ],
+      ),
     );
   }
 }

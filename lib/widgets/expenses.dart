@@ -47,25 +47,50 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _removeExpense(Expense expense) {
+    // variable that's hold deleted item list
+    final expenseIndex = _registeredExpenses.indexOf(expense);
     setState(() {
       _registeredExpenses.remove(expense);
     });
+    ScaffoldMessenger.of(context).clearSnackBars(); // clear snack msg
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        // textbox, show deleted msg and restore btn
+        duration: const Duration(seconds: 4),
+        content: const Text('Expense deleted'),
+        action: SnackBarAction(
+            label: 'Restore',
+            onPressed: () {
+              setState(() {
+                _registeredExpenses.insert(expenseIndex, expense);
+              });
+            }),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = const Center(
+      child: Text('No expenses found. Start by clicking button + above'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+        expenses: _registeredExpenses,
+        onRemoveExpense: _removeExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text('Expense Tracker',
-            style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Expense Tracker',
+        ),
         actions: [
           IconButton(
             onPressed: _openAddExpenseOverlay,
             icon: const Icon(Icons.add),
-            style: ButtonStyle(
-              iconColor: MaterialStateProperty.all(Colors.white),
-            ),
           ),
         ],
       ),
@@ -73,10 +98,7 @@ class _ExpensesState extends State<Expenses> {
         children: [
           const Text('The Chart'),
           Expanded(
-            child: ExpensesList(
-              expenses: _registeredExpenses,
-              onRemoveExpense: _removeExpense,
-            ),
+            child: mainContent,
           ),
         ],
       ),
