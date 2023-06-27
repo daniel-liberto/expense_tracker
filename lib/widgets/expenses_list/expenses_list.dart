@@ -6,19 +6,28 @@ class ExpensesList extends StatelessWidget {
   const ExpensesList({
     super.key,
     required this.expenses,
+    required this.onRemoveExpense,
   });
 
 // using expense.dart structure model
 // parameters: {id, title, amount, date, category}
   final List<Expense> expenses;
+  final void Function(Expense expense) onRemoveExpense;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: expenses
-          .length, // this is the amount of times that itemBuilder widget will be called.
-      itemBuilder: (ctx, index) => ExpenseItem(expenses[
-          index]), // get argument list, pick index position of that list, get title of that position on the list
+      itemCount: expenses.length, // (1)
+      itemBuilder: (ctx, index) => Dismissible(
+        // (2)
+        key: ValueKey(expenses[index]),
+        onDismissed: (direction) {
+          onRemoveExpense(expenses[index]);
+        },
+        child: ExpenseItem(expenses[index]),
+      ),
     );
+    // (1) this is the amount of times that itemBuilder widget will be called.
+    // (2) Dismissible will delete expenses when hover to left
   }
 }
