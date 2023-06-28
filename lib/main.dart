@@ -16,7 +16,12 @@ var kColorScheme =
   error: const Color.fromRGBO(255, 0, 0, .9),
 );
 
-var kDarkColorScheme = kColorScheme.copyWith();
+var kDarkColorScheme = kColorScheme.copyWith(
+  secondaryContainer: const Color.fromRGBO(60, 60, 60, 1),
+  tertiary: const Color.fromRGBO(200, 200, 200, 1),
+  background: const Color.fromRGBO(30, 30, 30, 1),
+  onBackground: const Color.fromRGBO(222, 127, 2, .8),
+);
 
 void main() {
   runApp(
@@ -30,9 +35,16 @@ void main() {
           iconTheme: IconThemeData(color: kDarkColorScheme.tertiary),
         ),
         cardTheme: const CardTheme().copyWith(
-          color: kDarkColorScheme.secondaryContainer.withAlpha(180),
+          color: kDarkColorScheme.secondaryContainer,
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kDarkColorScheme.secondaryContainer.withAlpha(180),
+            foregroundColor: kDarkColorScheme.onSecondaryContainer,
+          ),
+        ),
+        scaffoldBackgroundColor: kDarkColorScheme.background,
       ),
       theme: ThemeData().copyWith(
         useMaterial3: true,

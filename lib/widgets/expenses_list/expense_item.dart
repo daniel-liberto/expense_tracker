@@ -19,17 +19,32 @@ class ExpenseItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  expense.title,
-                  style: Theme.of(context).textTheme.titleLarge,
+                Icon(categoryIcons[expense.category],
+                    color: Theme.of(context).colorScheme.onBackground),
+                const SizedBox(width: 4),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    expense.title.toUpperCase(),
+                    maxLines: 2,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const Spacer(),
+                Icon(
+                  Icons.calendar_month,
+                  color: Theme.of(context).colorScheme.onBackground,
+                  size: 16,
+                ),
+                const SizedBox(width: 4),
                 Text(
                   'Expense date',
                   style: TextStyle(
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color:
-                          Theme.of(context).colorScheme.primary.withAlpha(200)),
+                      color: Theme.of(context).colorScheme.tertiary),
                 ),
               ],
             ),
@@ -56,9 +71,12 @@ class ExpenseItem extends StatelessWidget {
                 const Spacer(), // dynamcly space between contents
                 Row(
                   children: [
-                    Icon(categoryIcons[expense.category]),
-                    const SizedBox(width: 8),
-                    Text(expense.formattedDate),
+                    Text(
+                      expense.formattedDate,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ),
                     // don't use (), because get is not a method
                   ],
                 ),

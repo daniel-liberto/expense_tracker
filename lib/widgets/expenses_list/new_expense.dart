@@ -95,7 +95,7 @@ class _NewExpenseState extends State<NewExpense> {
                 children: [
                   TextField(
                     controller: _titleController,
-                    maxLength: 50,
+                    maxLength: 20,
                     decoration: InputDecoration(
                       isDense: true,
                       hintText: 'Type name of expense',
