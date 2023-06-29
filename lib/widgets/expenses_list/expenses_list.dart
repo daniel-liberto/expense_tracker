@@ -22,10 +22,18 @@ class ExpensesList extends StatelessWidget {
         // (2)
         key: ValueKey(expenses[index]),
         background: Container(
-          color: Theme.of(context).colorScheme.error,
+          color: Theme.of(context).colorScheme.error.withOpacity(0.5),
           margin: EdgeInsets.symmetric(
               horizontal: Theme.of(context).cardTheme.margin!.horizontal),
-          child: const Text('sim'),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: Text('Swipe to\n delete'),
+              ),
+            ],
+          ),
         ),
         confirmDismiss: (DismissDirection direction) async {
           return await showDialog(

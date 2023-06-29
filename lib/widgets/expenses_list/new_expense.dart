@@ -81,7 +81,7 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.tertiary.withOpacity(.9),
+      color: Theme.of(context).colorScheme.surface.withOpacity(1),
       child: Column(
         children: [
           AppBar(
@@ -145,10 +145,7 @@ class _NewExpenseState extends State<NewExpense> {
                       Container(
                         padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondaryContainer
-                              .withAlpha(180),
+                          color: Theme.of(context).colorScheme.inversePrimary,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
@@ -161,6 +158,8 @@ class _NewExpenseState extends State<NewExpense> {
                           ],
                         ),
                         child: DropdownButton(
+                            dropdownColor:
+                                Theme.of(context).colorScheme.inversePrimary,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold,
@@ -180,10 +179,6 @@ class _NewExpenseState extends State<NewExpense> {
                                   .primary
                                   .withAlpha(180),
                             ),
-                            dropdownColor: Theme.of(context)
-                                .colorScheme
-                                .tertiary
-                                .withAlpha(220),
                             value: _selectedCategory,
                             items: Category.values
                                 .map(
@@ -191,9 +186,18 @@ class _NewExpenseState extends State<NewExpense> {
                                     value: category,
                                     child: Row(
                                       children: [
-                                        Icon(categoryIcons[category]),
+                                        Icon(
+                                          categoryIcons[category],
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                        ),
                                         Text(
                                           '  ${category.name.toUpperCase()}',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer),
                                         ),
                                       ],
                                     ),

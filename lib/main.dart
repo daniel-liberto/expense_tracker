@@ -8,17 +8,23 @@ var kColorScheme =
   primaryContainer: Colors.black,
   onPrimary: Colors.black,
   onPrimaryContainer: Colors.white,
-  secondary: Colors.orange,
+  secondary: const Color.fromRGBO(222, 127, 2, .8),
   onSecondary: Colors.black,
-  secondaryContainer: Colors.orange,
+  secondaryContainer: const Color.fromRGBO(222, 127, 2, .8),
   onSecondaryContainer: Colors.black,
-  tertiary: Colors.white,
-  error: const Color.fromRGBO(255, 0, 0, .9),
+  tertiary: const Color.fromRGBO(252, 252, 252, 1),
+  background: const Color.fromRGBO(252, 252, 252, 1),
+  onBackground: const Color.fromRGBO(60, 60, 60, 1),
+  error: const Color.fromRGBO(220, 0, 0, 1),
+  inversePrimary: Colors.brown,
 );
 
 var kDarkColorScheme = kColorScheme.copyWith(
   secondaryContainer: const Color.fromRGBO(60, 60, 60, 1),
+  onSecondaryContainer: const Color.fromRGBO(222, 127, 2, .8),
   tertiary: const Color.fromRGBO(200, 200, 200, 1),
+  surface: const Color.fromRGBO(180, 180, 180, 1),
+  onSurface: const Color.fromRGBO(60, 60, 60, 1),
   background: const Color.fromRGBO(30, 30, 30, 1),
   onBackground: const Color.fromRGBO(222, 127, 2, .8),
 );
@@ -40,11 +46,28 @@ void main() {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: kDarkColorScheme.secondaryContainer.withAlpha(180),
-            foregroundColor: kDarkColorScheme.onSecondaryContainer,
+            backgroundColor:
+                kDarkColorScheme.onSecondaryContainer.withAlpha(180),
+            foregroundColor: kDarkColorScheme.primary,
           ),
         ),
         scaffoldBackgroundColor: kDarkColorScheme.background,
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: TextStyle(color: kDarkColorScheme.onSurface),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: kDarkColorScheme.primary),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: kDarkColorScheme.secondary),
+          ),
+        ),
+        datePickerTheme: DatePickerThemeData(
+          backgroundColor: kDarkColorScheme.tertiary,
+          dayForegroundColor:
+              MaterialStatePropertyAll(kDarkColorScheme.primary),
+          dayBackgroundColor:
+              MaterialStatePropertyAll(kDarkColorScheme.tertiary),
+        ),
       ),
       theme: ThemeData().copyWith(
         useMaterial3: true,
@@ -52,7 +75,9 @@ void main() {
         appBarTheme: const AppBarTheme().copyWith(
           backgroundColor: kColorScheme.primaryContainer,
           foregroundColor: kColorScheme.onPrimaryContainer,
-          iconTheme: IconThemeData(color: kColorScheme.tertiary),
+          iconTheme: IconThemeData(
+            color: kColorScheme.onPrimaryContainer,
+          ),
         ),
         cardTheme: const CardTheme().copyWith(
           color: kColorScheme.secondaryContainer.withAlpha(180),
@@ -64,6 +89,7 @@ void main() {
             foregroundColor: kColorScheme.onSecondaryContainer,
           ),
         ),
+        scaffoldBackgroundColor: kColorScheme.background,
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(foregroundColor: kColorScheme.primary),
         ),
