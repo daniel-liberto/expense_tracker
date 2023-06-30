@@ -32,6 +32,8 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
   void _submitExpenseData() {
+    final isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     final enteredAmount =
         double.tryParse(_amountController.text); // if string => null
     final amountIsInvalid = // true if is null or less than 0
@@ -43,9 +45,18 @@ class _NewExpenseState extends State<NewExpense> {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Invalid input'),
-          content: const Text(
-              'Please make sure if you choose a valid information and not used special characters like(#%@*).'),
+          backgroundColor: isDarkMode
+              ? Theme.of(context).colorScheme.tertiary
+              : Theme.of(context).colorScheme.tertiary,
+          title: Text(
+            'Invalid input',
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
+          content: Text(
+            'Please make sure if you choose a valid information and not used special characters like(#%@*).',
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.primary.withAlpha(180)),
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -80,158 +91,180 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.surface.withOpacity(1),
-      child: Column(
-        children: [
-          AppBar(
-            title: const Text(
-              'Create a new expense',
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _titleController,
-                    maxLength: 20,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: 'Type name of expense',
-                      contentPadding: const EdgeInsets.fromLTRB(4, 20, 0, 6),
-                      counterStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, keyboardSpace + 16),
+        child: Container(
+          color: Theme.of(context).colorScheme.surface.withOpacity(1),
+          child: Column(
+            children: [
+              AppBar(
+                title: const Text(
+                  'Create a new expense',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _titleController,
+                      maxLength: 20,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        hintText: 'Type name of expense',
+                        contentPadding: const EdgeInsets.fromLTRB(4, 20, 0, 6),
+                        counterStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _amountController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            prefixText: '\$ ',
-                            isDense: true,
-                            hintText: 'Type amount',
-                            contentPadding: EdgeInsets.fromLTRB(-10, 0, 0, 6),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _amountController,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              prefixText: '\$ ',
+                              isDense: true,
+                              hintText: 'Type amount',
+                              contentPadding: EdgeInsets.fromLTRB(-10, 0, 0, 6),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              _selectedDate == null
-                                  ? 'No date selected'
-                                  : formatter.format(_selectedDate!),
-                            ),
-                            IconButton(
-                              onPressed: _presentDatePicker,
-                              icon: const Icon(Icons.calendar_month),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withAlpha(120),
-                              spreadRadius: 0,
-                              blurRadius: 1,
-                              blurStyle: BlurStyle.solid,
-                              offset: const Offset(0, 1),
-                            )
-                          ],
-                        ),
-                        child: DropdownButton(
-                            dropdownColor:
-                                Theme.of(context).colorScheme.inversePrimary,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            enableFeedback: true,
-                            underline: Container(
-                              height: 1,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withAlpha(80),
-                            ),
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withAlpha(180),
-                            ),
-                            value: _selectedCategory,
-                            items: Category.values
-                                .map(
-                                  (category) => DropdownMenuItem(
-                                    value: category,
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          categoryIcons[category],
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ),
-                                        Text(
-                                          '  ${category.name.toUpperCase()}',
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimaryContainer),
-                                        ),
-                                      ],
-                                    ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                _selectedDate == null
+                                    ? 'No date selected'
+                                    : formatter.format(_selectedDate!),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                              ),
+                              IconButton(
+                                onPressed: _presentDatePicker,
+                                icon: const Icon(Icons.calendar_month),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(
+                                    Theme.of(context).colorScheme.secondary,
                                   ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              if (value == null) {
-                                return;
-                              } else {
-                                setState(() {
-                                  _selectedCategory = value;
-                                });
-                              }
-                            }),
-                      ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(
-                              context); // context = modal, closes modal
-                        },
-                        child: const Text('Cancel'),
-                      ),
-                      const SizedBox(width: 4),
-                      ElevatedButton(
-                        onPressed: _submitExpenseData,
-                        child: const Text('Save Expense'),
-                      ),
-                    ],
-                  )
-                ],
-              )),
-        ],
+                                  foregroundColor: MaterialStatePropertyAll(
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withAlpha(180),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withAlpha(120),
+                                spreadRadius: 0,
+                                blurRadius: 1,
+                                blurStyle: BlurStyle.solid,
+                                offset: const Offset(0, 1),
+                              )
+                            ],
+                          ),
+                          child: DropdownButton(
+                              dropdownColor:
+                                  Theme.of(context).colorScheme.inversePrimary,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              enableFeedback: true,
+                              underline: Container(
+                                height: 1,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withAlpha(80),
+                              ),
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withAlpha(180),
+                              ),
+                              value: _selectedCategory,
+                              items: Category.values
+                                  .map(
+                                    (category) => DropdownMenuItem(
+                                      value: category,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            categoryIcons[category],
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ),
+                                          Text(
+                                            '  ${category.name.toUpperCase()}',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                if (value == null) {
+                                  return;
+                                } else {
+                                  setState(() {
+                                    _selectedCategory = value;
+                                  });
+                                }
+                              }),
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(
+                                context); // context = modal, closes modal
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        const SizedBox(width: 4),
+                        ElevatedButton(
+                          onPressed: _submitExpenseData,
+                          child: const Text('Save Expense'),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

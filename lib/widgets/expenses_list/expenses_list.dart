@@ -16,6 +16,8 @@ class ExpensesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     return ListView.builder(
       shrinkWrap: true,
       itemCount: expenses.length, // (1)
@@ -41,9 +43,19 @@ class ExpensesList extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("Delete Confirmation"),
-                content:
-                    const Text("Are you sure you want to delete this expense?"),
+                backgroundColor: isDarkMode
+                    ? Theme.of(context).colorScheme.tertiary
+                    : Theme.of(context).colorScheme.tertiary,
+                title: Text(
+                  "Delete Confirmation",
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
+                content: Text(
+                  "Are you sure you want to delete this expense?",
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),

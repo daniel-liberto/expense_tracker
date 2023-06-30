@@ -24,7 +24,7 @@ var kDarkColorScheme = kColorScheme.copyWith(
   secondaryContainer: const Color.fromRGBO(60, 60, 60, 1),
   onSecondaryContainer: const Color.fromRGBO(222, 127, 2, .8),
   tertiary: const Color.fromRGBO(200, 200, 200, 1),
-  surface: const Color.fromRGBO(180, 180, 180, 1),
+  surface: const Color.fromRGBO(220, 220, 220, 1),
   onSurface: const Color.fromRGBO(60, 60, 60, 1),
   background: const Color.fromRGBO(30, 30, 30, 1),
   onBackground: const Color.fromRGBO(222, 127, 2, .8),
@@ -69,6 +69,15 @@ void main() {
         ),
         datePickerTheme: DatePickerThemeData(
           backgroundColor: kDarkColorScheme.tertiary,
+          headerBackgroundColor: kDarkColorScheme.primary,
+          headerForegroundColor: Colors.white,
+          dayOverlayColor:
+              MaterialStatePropertyAll(kDarkColorScheme.inversePrimary),
+          todayBackgroundColor:
+              MaterialStatePropertyAll(kDarkColorScheme.secondary),
+          todayForegroundColor:
+              MaterialStatePropertyAll(kDarkColorScheme.primary),
+          todayBorder: const BorderSide(color: Colors.black),
           dayForegroundColor:
               MaterialStatePropertyAll(kDarkColorScheme.primary),
           dayBackgroundColor:

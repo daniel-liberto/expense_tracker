@@ -30,12 +30,16 @@ class _ExpensesState extends State<Expenses> {
   ];
 
   void _openAddExpenseOverlay() {
+    final width = MediaQuery.of(context).size.width;
+
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (ctx) => SizedBox(
         // makes modal get 80% of device height
-        height: MediaQuery.of(ctx).size.height * 0.8,
+        height: width < 600
+            ? MediaQuery.of(ctx).size.height * 0.8
+            : MediaQuery.of(ctx).size.height,
         child: NewExpense(onAddExpense: _addExpense),
       ),
     );
@@ -73,6 +77,7 @@ class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
 
     Widget mainContent = const Center(
       child: Text('No expenses found. Start by clicking button + above'),
@@ -131,27 +136,30 @@ class _ExpensesState extends State<Expenses> {
                   child: Chart(expenses: _registeredExpenses),
                 ),
                 Expanded(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 50),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.account_balance_wallet_rounded,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          const SizedBox(width: 4),
-                          const Text(
-                            'Current Expenses',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: mainContent,
-                      ),
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, keyboardSpace),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.account_balance_wallet_rounded,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 4),
+                            const Text(
+                              'Current Expenses',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: mainContent,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

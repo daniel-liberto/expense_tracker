@@ -33,77 +33,80 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
-    return Container(
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.symmetric(
-        vertical: 16,
-        horizontal: 8,
-      ),
-      width: double.infinity,
-      height: 220,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-          colors: isDarkMode
-              ? [
-                  Theme.of(context).colorScheme.primary.withOpacity(1),
-                  Theme.of(context).colorScheme.background.withOpacity(0)
-                ]
-              : [
-                  Theme.of(context).colorScheme.secondary.withOpacity(0.9),
-                  Theme.of(context).colorScheme.secondary.withOpacity(0)
-                ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
+
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(
+          vertical: 16,
+          horizontal: 8,
         ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.bar_chart,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              const Text('Chart view'),
-            ],
+        width: double.infinity,
+        height: 260,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          gradient: LinearGradient(
+            colors: isDarkMode
+                ? [
+                    Theme.of(context).colorScheme.primary.withOpacity(1),
+                    Theme.of(context).colorScheme.background.withOpacity(0)
+                  ]
+                : [
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.9),
+                    Theme.of(context).colorScheme.secondary.withOpacity(0)
+                  ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
           ),
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (final bucket in buckets) // alternative to map()
-                  ChartBar(
-                    fill: bucket.totalExpenses == 0
-                        ? 0
-                        : bucket.totalExpenses / maxTotalExpense,
-                  )
+                Icon(
+                  Icons.bar_chart,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                const Text('Chart view'),
               ],
             ),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: buckets
-                .map(
-                  (bucket) => Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        categoryIcons[bucket.category],
-                        color: isDarkMode
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.8),
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  for (final bucket in buckets) // alternative to map()
+                    ChartBar(
+                      fill: bucket.totalExpenses == 0
+                          ? 0
+                          : bucket.totalExpenses / maxTotalExpense,
+                    )
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: buckets
+                  .map(
+                    (bucket) => Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Icon(
+                          categoryIcons[bucket.category],
+                          color: isDarkMode
+                              ? Theme.of(context).colorScheme.secondary
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.8),
+                        ),
                       ),
                     ),
-                  ),
-                )
-                .toList(),
-          )
-        ],
+                  )
+                  .toList(),
+            )
+          ],
+        ),
       ),
     );
   }
