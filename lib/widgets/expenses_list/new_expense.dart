@@ -110,6 +110,11 @@ class _NewExpenseState extends State<NewExpense> {
                 child: Column(
                   children: [
                     TextField(
+                      style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withAlpha(180)),
                       controller: _titleController,
                       maxLength: 20,
                       decoration: InputDecoration(
@@ -125,13 +130,25 @@ class _NewExpenseState extends State<NewExpense> {
                       children: [
                         Expanded(
                           child: TextField(
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withAlpha(180)),
                             controller: _amountController,
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
-                              prefixText: '\$ ',
+                              prefixIcon: Text(
+                                '\$ ',
+                                style: TextStyle(color: Colors.orange),
+                              ),
+                              prefixIconConstraints: BoxConstraints(
+                                maxHeight: double.maxFinite,
+                                maxWidth: double.maxFinite,
+                              ),
                               isDense: true,
                               hintText: 'Type amount',
-                              contentPadding: EdgeInsets.fromLTRB(-10, 0, 0, 6),
+                              contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 6),
                             ),
                           ),
                         ),

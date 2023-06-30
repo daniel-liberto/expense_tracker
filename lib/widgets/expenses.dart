@@ -16,16 +16,28 @@ class Expenses extends StatefulWidget {
 class _ExpensesState extends State<Expenses> {
   final List<Expense> _registeredExpenses = [
     Expense(
-      title: 'Flutter Course',
+      title: 'Paypal - Business',
       amount: 19.99,
       date: DateTime.now(),
       category: Category.work,
     ),
     Expense(
-      title: 'Cinema',
-      amount: 15.99,
+      title: 'Marvel movie',
+      amount: 14.99,
       date: DateTime.now(),
       category: Category.leisure,
+    ),
+    Expense(
+      title: 'BK - Whopper',
+      amount: 9.99,
+      date: DateTime.now(),
+      category: Category.food,
+    ),
+    Expense(
+      title: 'East Coast Beach',
+      amount: 29.99,
+      date: DateTime.now(),
+      category: Category.travel,
     ),
   ];
 
@@ -33,6 +45,7 @@ class _ExpensesState extends State<Expenses> {
     final width = MediaQuery.of(context).size.width;
 
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) => SizedBox(
@@ -106,6 +119,7 @@ class _ExpensesState extends State<Expenses> {
           ? Column(
               children: [
                 Chart(expenses: _registeredExpenses),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
