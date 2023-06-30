@@ -17,6 +17,7 @@ class ExpensesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: expenses.length, // (1)
       itemBuilder: (ctx, index) => Dismissible(
         // (2)

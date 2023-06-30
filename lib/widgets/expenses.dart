@@ -72,6 +72,8 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     Widget mainContent = const Center(
       child: Text('No expenses found. Start by clicking button + above'),
     );
@@ -95,33 +97,65 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: _registeredExpenses),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.account_balance_wallet_rounded,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              const Text(
-                'Current Expenses',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Expanded(
-            child: mainContent,
-          ),
-        ],
-      ),
+      body: width < 600
+          ? Column(
+              children: [
+                Chart(expenses: _registeredExpenses),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.account_balance_wallet_rounded,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    const Text(
+                      'Current Expenses',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                  child: Chart(expenses: _registeredExpenses),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 50),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.account_balance_wallet_rounded,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          const SizedBox(width: 4),
+                          const Text(
+                            'Current Expenses',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: mainContent,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
